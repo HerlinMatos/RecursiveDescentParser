@@ -1,8 +1,7 @@
 var tokens = ['id','+','id', '+', 'id'];
 
 //Grammar:
-//Exp => id + Exp 
-//Exp => id 
+//Exp => id + Exp | id 
 
 var head = 0;
 
