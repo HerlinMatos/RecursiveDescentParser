@@ -19,12 +19,9 @@ var match = (t) => {
 	return false;	
 }
 
-var Exp = () => { 
-	if(match('id') && match('+') && (e = Exp()))
-		return {id:'id', o:'+', e}
-	else if(match('id'))
-		return {id:'id'}
-}
+const Exp1 = () => { if(match('id') && match('+') && (e = Exp())) return {id:'id', o:'+', e} }
+const Exp2 = () => { if(match('id')) return {id:'id'} }
+const Exp = () => Exp1() || Exp2()
 
 
 console.log('------\n',Exp());
