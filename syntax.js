@@ -12,31 +12,42 @@ var match = (t) => {
 	return null	
 }
 
-function Exp() { 
+function Rule(){
 	let save = head 
-	if(match('id') && match('+') && (e=Exp())) {
-		return {id:'id', o:'+', e}
+	let node = {
+		t:[]
 	}
-	head = save
-	if(match('id') && match('-') && (e=Exp())){
-		return {id:'id', o:'-', e}
-	} 
-	head = save
-	if(match('(') && (e=Exp()) && match(')')){
-		return {op:'(', e, cp:')'}
-	} 
-	head = save
-	if(match('id')) {
-		return {id:'id'}
+	for(a of arguments){
+		if(typeof a == 'string'){
+			const terminal = match(a)
+			if(terminal)
+				node.t.push(terminal);
+			else 
+				break
+		}else if(typeof a == 'function'){
+			const funcName = a.name
+			const funcResult = a()
+			if(funcResult)
+				node[funcName] = funcResult;
+			else 
+				break
+		}
 	}
+	const nodeLength = Object.keys(node).length
+	//realNodeLength = nodeLength - t - t.length
+	const realNodeLength = nodeLength - 1 + node.t.length
+	if(realNodeLength == arguments.length)
+		return node
+	head = save
 	return null
 }
 
+const E = () => Rule('id','+', E) || Rule('id','-', E) || Rule('(',E,')') || Rule('id')   
+
 //------------------------------------------------------------------------
 
-let tree = Exp()
+let tree = E()
 var treeify = require('treeify');
 console.log(
    treeify.asTree(tree, true)
 );
-
