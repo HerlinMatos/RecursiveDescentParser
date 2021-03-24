@@ -1,24 +1,46 @@
-var tokens = ['id','+','id', '-', 'id','-','(','id','+','id',')'];
+var tokens = ['(','id','+','id',')'];
 
 //Grammar:
-//Exp => id + Exp | id - Exp | id 
+//Exp => id + Exp | id - Exp | (Exp) | id 
 
-let accepted = 0
-var match = (t, i) => {
-	if(t == tokens[i]){
-		accepted++
-		return true;
+let head = 0
+var match = (t) => {
+	if(t == tokens[head]){
+		head++
+		return true
 	}
-	accepted--
-	return false;	
+	return false	
 }
 
-const Exp1 = (i) => { if(match('id',i++) && match('+',i++) && (e = Exp(i))) return {id:'id', o:'+', e} }
-const Exp2 = (i) => { if(match('id',i++) && match('-',i++) && (e = Exp(i))) return {id:'id', o:'-', e} }
-const Exp3 = (i) => { if(match('id',i++)) return {id:'id'} }
-const Exp = (i) => Exp1(i) || Exp2(i) || Exp3(i)
+function Exp(tree) { 
+	tree.Exp = {}
+	let save = head 
+	if(match('id') && match('+') && Exp(tree.Exp)) {
+		tree.Exp.id = 'id' 
+		tree.Exp.o = '+' 
+		return true
+	}
+	head = save
+	if(match('id') && match('-') && Exp(tree.Exp)){
+		tree.Exp.id = 'id' 
+		tree.Exp.o = '-' 
+		return true
+	} 
+	head = save
+	if(match('(') && Exp(tree.Exp) && match(')')){
+		tree.Exp = {op:'(', cp:')'} 
+		tree.Exp.op = '(' 
+		tree.Exp.cp = ')' 
+		return true
+	} 
+	head = save
+	if(match('id')) {
+		tree.Exp.id = 'id' 
+		return true
+	}
+	return false
+}
 
-
-console.log('------\n',Exp(0));
-if(accepted < tokens.length)
-	console.log('error 1');
+let tree = {}
+Exp(tree)
+console.log('------\n',JSON.stringify(tree) );
