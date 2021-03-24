@@ -28,7 +28,6 @@ function Exp(tree) {
 	} 
 	head = save
 	if(match('(') && Exp(tree.Exp) && match(')')){
-		tree.Exp = {op:'(', cp:')'} 
 		tree.Exp.op = '(' 
 		tree.Exp.cp = ')' 
 		return true
