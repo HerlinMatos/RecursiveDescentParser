@@ -1,8 +1,5 @@
 var tokens = ['id','+','id', '-', 'id','-','(','id','+','id',')'];
 
-//Grammar:
-//Exp => id + Exp | id - Exp | (Exp) | id 
-
 let head = 0
 var match = (t) => {
 	if(t == tokens[head]){
@@ -41,6 +38,11 @@ function Rule(){
 	head = save
 	return null
 }
+
+
+//------------------------------------------------------------------------
+//Grammar:
+//Exp => id + Exp | id - Exp | (Exp) | id 
 
 const E = () => Rule('id','+', E) || Rule('id','-', E) || Rule('(',E,')') || Rule('id')   
 
