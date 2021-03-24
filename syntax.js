@@ -7,41 +7,34 @@ let head = 0
 var match = (t) => {
 	if(t == tokens[head]){
 		head++
-		return true
+		return t
 	}
-	return false	
+	return null	
 }
 
-function Exp(tree) { 
-	tree.Exp = {}
+function Exp() { 
 	let save = head 
-	if(match('id') && match('+') && Exp(tree.Exp)) {
-		tree.Exp.id = 'id' 
-		tree.Exp.o = '+' 
-		return true
+	if(match('id') && match('+') && (e=Exp())) {
+		return {id:'id', o:'+', e}
 	}
 	head = save
-	if(match('id') && match('-') && Exp(tree.Exp)){
-		tree.Exp.id = 'id' 
-		tree.Exp.o = '-' 
-		return true
+	if(match('id') && match('-') && (e=Exp())){
+		return {id:'id', o:'-', e}
 	} 
 	head = save
-	if(match('(') && Exp(tree.Exp) && match(')')){
-		tree.Exp.op = '(' 
-		tree.Exp.cp = ')' 
-		return true
+	if(match('(') && (e=Exp()) && match(')')){
+		return {op:'(', e, cp:')'}
 	} 
 	head = save
 	if(match('id')) {
-		tree.Exp.id = 'id' 
-		return true
+		return {id:'id'}
 	}
-	return false
+	return null
 }
 
-let tree = {}
-Exp(tree)
+//------------------------------------------------------------------------
+
+let tree = Exp()
 var treeify = require('treeify');
 console.log(
    treeify.asTree(tree, true)
