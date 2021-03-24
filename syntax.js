@@ -1,4 +1,4 @@
-var tokens = ['(','id','+','id',')'];
+var tokens = ['id','+','id', '-', 'id','-','(','id','+','id',')'];
 
 //Grammar:
 //Exp => id + Exp | id - Exp | (Exp) | id 
@@ -42,4 +42,8 @@ function Exp(tree) {
 
 let tree = {}
 Exp(tree)
-console.log('------\n',JSON.stringify(tree) );
+var treeify = require('treeify');
+console.log(
+   treeify.asTree(tree, true)
+);
+

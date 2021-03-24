@@ -1,0 +1,14 @@
+{
+  "name": "parser_des_recursive",
+  "version": "1.0.0",
+  "description": "",
+  "main": "syntax.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Herlin Matos",
+  "license": "ISC",
+  "dependencies": {
+    "treeify": "^1.1.0"
+  }
+}
