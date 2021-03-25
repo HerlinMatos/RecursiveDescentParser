@@ -2,24 +2,24 @@ var tokens = ['id','+','id', '-', 'id','-','(','id','+','id',')'];
 
 let head = 0
 var match = (t) => {
-	if(t == tokens[head]){
+	const currentToken = tokens[head]
+	if(t.test(currentToken)){
 		head++
-		return t
+		return currentToken
 	}
 	return null	
 }
 
 function Rule(){
 	let save = head 
-	let node = {
-		t:[]
-	}
+	let node = {}
 	for(a of arguments){
-		if(typeof a == 'string'){
+		if(typeof a == 'object'){
 			const terminal = match(a)
-			if(terminal)
+			if(terminal){
+				node.t = node.t || []
 				node.t.push(terminal);
-			else 
+			}else 
 				break
 		}else if(typeof a == 'function'){
 			const funcName = a.name
@@ -31,8 +31,8 @@ function Rule(){
 		}
 	}
 	const nodeLength = Object.keys(node).length
-	//realNodeLength = nodeLength - t - t.length
-	const realNodeLength = nodeLength - 1 + node.t.length
+	const terminalsLength = node.t ? (node.t.length - 1) : 0 
+	const realNodeLength = nodeLength + terminalsLength 
 	if(realNodeLength == arguments.length)
 		return node
 	head = save
@@ -43,12 +43,17 @@ function Rule(){
 //------------------------------------------------------------------------
 //Grammar:
 //Exp => id + Exp | id - Exp | (Exp) | id 
-
-const E = () => Rule('id','+', E) || Rule('id','-', E) || Rule('(',E,')') || Rule('id')   
+const Id = () => Rule(/^id$/) 
+const Plus = () => Rule(/^\+$/) 
+const Minus = () => Rule(/^\-$/) 
+const Op = () => Rule(/^\($/) 
+const Cp = () => Rule(/^\)$/) 
+const E = () => Rule(Id,Plus, E) || Rule(Id,Minus, E) || Rule(Op,E,Cp) || Rule(Id)   
 
 //------------------------------------------------------------------------
 
 let tree = E()
+console.log(JSON.stringify(tree))
 var treeify = require('treeify');
 console.log(
    treeify.asTree(tree, true)
