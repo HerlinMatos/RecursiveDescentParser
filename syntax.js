@@ -51,9 +51,11 @@ const LogicOp = () => Rule(/^[\>\<]$/)
 const Op = () => Rule(/^\($/) 
 const Cp = () => Rule(/^\)$/) 
 const IfId = () => Rule(/^if$/) 
+
 const E = () => Rule(Id,Plus, E) || Rule(Id,Minus, E) || Rule(Op,E,Cp) || Rule(Id)   
 const BoolExp = () => Rule(Id, LogicOp, BoolExp) || Rule(Id)
 const IfExp = () => Rule(IfId, Op ,BoolExp, Cp, E) 
+const Stmt = () => Rule(IfId, Op ,BoolExp, Cp, Stmt) || Rule(E) 
 
 //------------------------------------------------------------------------
 
