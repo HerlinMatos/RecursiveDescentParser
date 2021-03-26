@@ -1,4 +1,4 @@
-var tokens = ['id','+','id', '-', 'id','-','(','id','+','id',')'];
+var tokens = ['a','+','b', '-', 'var','-','(','id','+','id',')'];
 
 let head = 0
 var match = (t) => {
@@ -43,7 +43,7 @@ function Rule(){
 //------------------------------------------------------------------------
 //Grammar:
 //Exp => id + Exp | id - Exp | (Exp) | id 
-const Id = () => Rule(/^id$/) 
+const Id = () => Rule(/^\w+$/) 
 const Plus = () => Rule(/^\+$/) 
 const Minus = () => Rule(/^\-$/) 
 const Op = () => Rule(/^\($/) 
