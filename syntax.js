@@ -1,5 +1,5 @@
 //var tokens = ['a','+','b', '-', 'var','-','(','id','+','id',')'];
-var tokens = ['a','>','b', '<', 'c'];
+var tokens = ['if','(','a','>','b', ')', 'c','+', 'd'];
 
 let head = 0
 var match = (t) => {
@@ -50,12 +50,14 @@ const Minus = () => Rule(/^\-$/)
 const LogicOp = () => Rule(/^[\>\<]$/) 
 const Op = () => Rule(/^\($/) 
 const Cp = () => Rule(/^\)$/) 
+const IfId = () => Rule(/^if$/) 
 const E = () => Rule(Id,Plus, E) || Rule(Id,Minus, E) || Rule(Op,E,Cp) || Rule(Id)   
 const BoolExp = () => Rule(Id, LogicOp, BoolExp) || Rule(Id)
+const IfExp = () => Rule(IfId, Op ,BoolExp, Cp, E) 
 
 //------------------------------------------------------------------------
 
-let tree = BoolExp()
+let tree = IfExp()
 console.log(JSON.stringify(tree))
 var treeify = require('treeify');
 console.log(
