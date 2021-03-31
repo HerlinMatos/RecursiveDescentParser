@@ -1,5 +1,38 @@
-//var tokens = ['a','+','b', '-', 'var','-','(','id','+','id',')'];
-var tokens = ['if','(','a','>','b', ')', 'c','+', 'd'];
+
+const tokenExp = [
+	/^if/,
+	/^\w+/,
+	/^[\+\-]/,
+	/^[\>\<]/,
+	/^[\>\<]/,
+	/^[\(\)]/,
+]
+
+let code = "if(a>b)c+d"
+
+function lexer(code){
+	let tokensReturn = []
+	while(code.length > 0){
+		let matchToken = ''
+		for(t of tokenExp){
+			let mt = code.match(t)
+			if(mt)
+				matchToken = mt[0]
+		}
+		if(matchToken){
+			tokensReturn.push(matchToken)	
+			code = code.slice(matchToken.length)
+		}else{
+			console.log('lexical error')
+			break
+		}
+	}
+	return tokensReturn
+}
+
+//------------------------------------------------------------------------
+
+const tokens = lexer(code)
 
 let head = 0
 var match = (t) => {
